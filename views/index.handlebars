@@ -2,28 +2,49 @@
   <div class="container">
     <div class="row">
       <div class="col-8 offset-2">
-        <h1>{{msg}}</h1>
-        <h2>This is our Home Page!</h2>
+        <h1>{{title}}</h1>
+        <h3>Create and Devour Burgers!</h3>
+
+
+        <div class="eatBurger">
+          <h5>Burgers ready to be eaten:</h5>
+          <ul>
+            {{#each burgers}}
+              {{#unless this.devoured}}
+                <li>
+                  {{this.burger_name}}
+                  <form>
+                    <input id="id" type="hidden" name="devoured" value="{{this.id}}">
+                    <button id="devour" type="submit">Devour It!</button>
+                  </form>
+
+                </li>
+              {{/unless}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <div class="devouredBurgers">
+          <h5>Burgers already devoured!</h5>
+          <ul>
+            {{#each burgers}}
+              {{#if this.devoured}}
+                <li>
+                  {{this.burger_name}}
+                </li>
+              {{/if}}
+            {{/each}}
+          </ul>
+        </div>
+
         <form class="clearfix mb-4" action="POST">
           <div class="form-group">
-            <label for="example-text">Example Text</label>
-            <input type="text" id="example-text" class="form-control" aria-describedby="example-text" placeholder="Enter Example Text">
-          </div>
-          <div class="form-group">
-            <label for="example-description">Example Description</label>
-            <textarea class="form-control" id="example-description" aria-describedby="example-description" placeholder="Enter Example Description"></textarea>
+            <label for="burger-text">Create a Burger</label>
+            <input type="text" id="burger-text" class="form-control" aria-describedby="burger-text" placeholder="Enter Burger Text">
           </div>
           <button id="submit" class="btn btn-primary float-right">Submit</button>
         </form>
-        <h3>Examples:</h3>
-        <ul id="example-list" class="list-group">
-          {{#each examples}}
-          <li data-id="{{this.id}}" class="list-group-item">
-            <a href="example/{{this.id}}">{{this.text}}</a>
-            <button class="btn btn-danger float-right delete">ｘ</button>
-          </li>
-          {{/each}}
-        </ul>
+
       </div>
     </div>
   </div>

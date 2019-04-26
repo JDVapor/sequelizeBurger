@@ -1,99 +1,84 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
+var $burgerText = $("#burger-text");
 var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $burgerList = $("#burger-list");
+var $devourBtn = $("#devour");
 
-// The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  saveBurger: function(burger) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/burgers",
+      data: JSON.stringify(burger)
     });
   },
-  getExamples: function() {
+  getBurgers: function() {
     return $.ajax({
-      url: "api/examples",
+      url: "api/burgers",
       type: "GET"
-    });
-  },
-  deleteExample: function(id) {
-    return $.ajax({
-      url: "api/examples/" + id,
-      type: "DELETE"
     });
   }
 };
 
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+var refreshBurgers = function() {
+  API.getBurgers().then(function(data) {
+    var $burgers = data.map(function(burger) {
       var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+        .text(burger.text)
+        .attr("href", "/burgers/" + burger.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": example.id
+          "data-id": burger.id
         })
         .append($a);
 
       var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+        .addClass("btn btn-danger")
+        .text("Devour");
 
       $li.append($button);
 
       return $li;
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
+    $burgerList.empty();
+    $burgerList.append($burgers);
   });
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  var burger = {
+    burger_name: $burgerText.val().trim(),
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
+  if (!burger.text) {
+    alert("You forgot to make a burger, dude!");
     return;
   }
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveBurger(burger).then(function() {
+    refreshBurgers();
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  $burgerText.val("");
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+function devourBurger() {
+  var id = $("#id").attr("value");
+  console.log("devouring");
+  $.ajax({
+    method: "PUT",
+    url: "/" + id
+  }).done(function() {
+    window.location.href = "/";
   });
 };
 
-// Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$devourBtn.on("click", devourBurger());
