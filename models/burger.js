@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function(sequelize, DataTypes) {
   var Burger = sequelize.define('Burger', {
     burger_name: {
       type: DataTypes.STRING,
@@ -11,6 +11,8 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     }
+  }, {
+    timestamps: false
   });
 
   Burger.associate = function(models) {

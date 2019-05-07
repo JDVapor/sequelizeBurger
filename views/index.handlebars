@@ -6,13 +6,13 @@
       {{#unless this.devoured}}
         <div class="burger-div">
 
-          <form class="inline-form" action="/?_method=PUT" method="POST">
-            <div class="form-group">
+          <!-- <form class="inline-form" action="/burgers" method="PUT">
+            <div class="form-group"> -->
               <label class="burger-label" for="burger-id">{{this.id}}. {{this.burger_name}}</label>
               <input type="hidden" id="burger-id" name="id" value="{{this.id}}" />
-              <button class="btn btn-success" type="submit">Devour it!</button>
-            </div>
-          </form>
+              <button id="devour" class="btn btn-success" type="submit">Devour it!</button>
+            <!-- </div>
+          </form> -->
         </div>
 
       {{/unless}}
@@ -32,12 +32,14 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row align-center">
   <h2>Add a Burger</h2>
-  <form class="form" method="POST" action="/">
+  <form class="form" method="POST" action="/burgers">
     <div class="form group">
       <textarea type="text" name="burger_name"></textarea>
     </div>
     <button class="btn btn-primary" type="submit">Add A Burger!</button>
   </form>
 </div>
+
+<script src="/assets/js/burger.js"></script>
